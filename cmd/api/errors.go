@@ -6,12 +6,14 @@ import (
 )
 
 func (app *application) logError(r *http.Request, err error) {
+
 	app.logger.Print(err)
 }
 
+// below func is used by other error response funcs
 func (app *application) errorResponse(w http.ResponseWriter, r *http.Request, status int, message interface{}) {
-	env := envelope{"error": message}
-	err := app.writeJSON(w, status, env, nil)
+	err_msg := envelope{"error": message}
+	err := app.writeJSON(w, status, err_msg, nil)
 	if err != nil {
 		app.logError(r, err)
 		w.WriteHeader(500)
