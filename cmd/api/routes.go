@@ -11,7 +11,7 @@ func (app *application) routes() *chi.Mux {
 	router.Use(middleware.Logger)
 	// Routes
 	router.Get("/v1/healthcheck", app.healthcheckHandler)
-	router.Post("/v1/apartments", app.createApartmentHandler)
-	router.Get("/v1/apartments/{id}", app.getApartmentHandler)
+	router.Post("/v1/units", app.createUnitHandler)
+	router.Get("/v1/units/{id}", app.getUnitHandler)
 	return router
 }
