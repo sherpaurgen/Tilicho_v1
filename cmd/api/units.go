@@ -15,7 +15,7 @@ func (app *application) createUnitHandler(w http.ResponseWriter, r *http.Request
 func (app *application) getUnitHandler(w http.ResponseWriter, r *http.Request) {
 	unitid, err := app.readIDParam(r)
 	if err != nil {
-		http.NotFound(w, r)
+		app.notFoundResponse(w, r)
 		return
 	}
 	unit := data.Unit{
@@ -30,7 +30,6 @@ func (app *application) getUnitHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	err = app.writeJSON(w, http.StatusOK, envelope{"unit": unit}, nil)
 	if err != nil {
-		app.logger.Print(err)
-		http.Error(w, "Ther server encountered an error", http.StatusInternalServerError)
+		app.serverErrorResponse(w, r, err)
 	}
 }
