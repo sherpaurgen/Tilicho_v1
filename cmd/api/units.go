@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -22,7 +21,8 @@ func (app *application) createUnitHandler(w http.ResponseWriter, r *http.Request
 		Features    []string  `json:"generes"`
 	}
 
-	err := json.NewDecoder(r.Body).Decode(&input)
+	//err := json.NewDecoder(r.Body).Decode(&input)
+	err := app.readJSON(w, r, &input)
 	if err != nil {
 		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
 		return
