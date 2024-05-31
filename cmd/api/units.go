@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -9,7 +10,24 @@ import (
 )
 
 func (app *application) createUnitHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "creates a new Unit")
+	var input struct {
+		UnitID      int       `json:"unit_id" db:"unit_id"`
+		BuildingID  string    `json:"building_id" db:"building_id"`
+		OwnerID     int       `json:"owner_id" db:"owner_id"`
+		Title       string    `json:"title" db:"title"`
+		Description string    `json:"description" db:"description"`
+		FloorNumber int       `json:"floor_number" db:"floor_number"`
+		PricePerDay float64   `json:"price_per_day,omitempty" db:"price_per_day"`
+		CreatedAt   time.Time `json:"created_at" db:"created_at"`
+		Features    []string  `json:"generes"`
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&input)
+	if err != nil {
+		app.errorResponse(w, r, http.StatusBadRequest, err.Error())
+		return
+	}
+	fmt.Fprintf(w, "%+v\n", input)
 }
 
 func (app *application) getUnitHandler(w http.ResponseWriter, r *http.Request) {
